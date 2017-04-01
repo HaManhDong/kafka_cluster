@@ -1,29 +1,17 @@
+from kafka.client import KafkaClient
 from kafka import KafkaConsumer
-import json
 
-consumer = KafkaConsumer('dong-topic',
-                         group_id='dong-group',
-                         bootstrap_servers=['localhost:9092'])
+
+#client = KafkaClient(boostrap_servers='localhost:9092');
+
+
+
+consumer = KafkaConsumer('topic1',
+                          bootstrap_servers=['localhost:9092'])
+print consumer.topics()
+print consumer.subscription()
 
 for message in consumer:
     print("%s:%d:%d: key=%s value=$s" % (message.topic, message.partition,
                                          message.offset, message.key,
                                          message.value))
-
-KafkaConsumer(auto_offset_reset='earliest', enable_auto_commit=False)
-
-KafkaConsumer(value_deserializer=lambda m: json.loads(m.decode('ascii')))
-
-# KafkaConsumer(value_deserializer=msgpack.unpackb)
-
-KafkaConsumer(consumer_timeout_ms=1000)
-
-consumer = KafkaConsumer()
-consumer.subscribe(pattern='^awesome.*')
-
-consumer1 = KafkaConsumer('dong-topic',
-                          group_id='dong-group',
-                          bootstrap_servers='my.server.com')
-consumer2 = KafkaConsumer('dong-topic',
-                          group_id='dong-group',
-                          bootstrap_servers='my.server.com')
